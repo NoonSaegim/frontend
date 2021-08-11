@@ -7,11 +7,16 @@ class SideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       child: ListView(
+        shrinkWrap: true,
         padding: EdgeInsets.zero,
         children: [
-          DrawerHeader(
-            child: Text("Menu", style: TextStyle(color: Colors.grey)),
-
+          Container(
+            height: (MediaQuery.of(context).size.height -
+                    MediaQuery.of(context).padding.top) * 0.15,
+            child: DrawerHeader(
+              child: Text("Menu", style: TextStyle(color: Colors.white)),
+              decoration: BoxDecoration( color: Colors.lightBlue, ),
+            ),
           ),
           ListTile(
               leading: IconButton(
