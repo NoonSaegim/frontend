@@ -91,7 +91,7 @@ class TransparentAppBar extends StatelessWidget with PreferredSizeWidget{
               builder: (BuildContext context) {
                 return IconButton(
                   icon: Icon(Icons.menu),
-                  color: Colors.lightBlue,
+                  color: Colors.lightBlueAccent,
                   tooltip: 'Menu',
                   onPressed: () => Scaffold.of(context).openDrawer(),
                 );

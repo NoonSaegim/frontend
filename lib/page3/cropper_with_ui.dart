@@ -8,29 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart' show rootBundle;
 
-
-// class MyApp extends StatefulWidget {
-//   @override
-//   _MyAppState createState() => _MyAppState();
-// }
-//
-// class _MyAppState extends State<MyApp> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: Scaffold(
-//         appBar: AppBar(
-//           title: Text('Crop Your Image Demo'),
-//         ),
-//         body: CropSample(),
-//       ),
-//     );
-//   }
-// }
 class SingleCropper extends StatefulWidget {
   const SingleCropper({Key? key}) : super(key: key);
 
@@ -48,8 +25,8 @@ class _SingleCropperState extends State<SingleCropper> {
             color: Colors.black12,
             height: (MediaQuery.of(context).size.height -
                 AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.top) * 0.6,// Your screen background color
-            margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top) ,
+                MediaQuery.of(context).padding.top) * 0.8,// Your screen background color
+            margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top),
           ),
           Center(
             child: Cropper(),
@@ -68,7 +45,7 @@ class Cropper extends StatefulWidget {
 
 class _CropperState extends State<Cropper> {
   static const _images = const [
-    'imgs/horse.jpg',
+    'imgs/apple-logo.png',
     'imgs/main.JPG',
   ];
 
@@ -88,7 +65,6 @@ class _CropperState extends State<Cropper> {
   var _isCropping = false;
   var _isCircleUi = false;
   Uint8List? _croppedData;
-  var _statusText = '';
 
   @override
   void initState() {
@@ -154,17 +130,12 @@ class _CropperState extends State<Cropper> {
                             });
                           },
                           withCircleUi: _isCircleUi,
-                          onStatusChanged: (status) => setState(() {
-                            _statusText = <CropStatus, String>{
-                              CropStatus.nothing: 'Crop has no image data',
-                              CropStatus.loading:
-                              'Crop is now loading given image',
-                              CropStatus.ready: '',
-                              CropStatus.cropping:
-                              'Crop is now cropping image',
-                            }[status] ??
-                                '';
-                          }),
+                          onStatusChanged: (CropStatus status) => {
+                              // CropStatus.nothing: print('Crop has no image data'),
+                              // CropStatus.loading: print('Crop is now loading given image'),
+                              // CropStatus.ready: print('crop is ready'),
+                              // CropStatus.cropping: print('Crop is now cropping image'),
+                          },
                           initialSize: 0.5,
                           maskColor: _isSumbnail ? Colors.white : null,
                           cornerDotBuilder: (size, edgeAlignment) => _isSumbnail
@@ -241,70 +212,61 @@ class _CropperState extends State<Cropper> {
                               }),
                         ],
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          IconButton(
-                              onPressed: () => print('다시 찍기'),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Expanded(
+                        child: Container(
+                          padding: EdgeInsets.only(right: 20, left: 20),
+                          height:(MediaQuery.of(context).size.height -
+                              AppBar().preferredSize.height -
+                              MediaQuery.of(context).padding.top) * 0.13,
+                          child: IconButton(
+                              onPressed: () => print('다시 찍기 to camera'),
                               tooltip: 'retake',
                               icon: Transform(
                                 alignment: Alignment.center,
                                 transform: Matrix4.rotationY(math.pi),
                                 child: SvgPicture.asset(
                                   'imgs/redo.svg',
+                                  alignment: Alignment.centerRight,
                                   placeholderBuilder: (BuildContext context) => Container(
                                       child: const CircularProgressIndicator()
                                   ),
                                 ),
                               )
                           ),
-                          IconButton(
-                              onPressed: () => print('제출하기'),
-                              tooltip: 'Submit',
-                              icon: SvgPicture.asset(
-                                'imgs/redo.svg',
-                                placeholderBuilder: (BuildContext context) => Container(
-                                    child: const CircularProgressIndicator()
-                                ),
-                                height: (MediaQuery.of(context).size.height -
-                                    AppBar().preferredSize.height -
-                                    MediaQuery.of(context).padding.top) * 0.11,
-                              )
-                          )
-                        ],
-                      ),
-                      // Container(
-                      //   color: Colors.white,
-                      //   padding: EdgeInsets.only(right: 20, left: 20),
-                      //   height: (MediaQuery.of(context).size.height -
-                      //       AppBar().preferredSize.height -
-                      //       MediaQuery.of(context).padding.top) * 0.4,
-                      //
-                      //   child:
-                      //   // width: double.infinity,
-                      //   // child: ElevatedButton(
-                      //   //   onPressed: () {
-                      //   //     setState(() {
-                      //   //       _isCropping = true;
-                      //   //     });
-                      //   //     _isCircleUi
-                      //   //         ? _cropController.cropCircle()
-                      //   //         : _cropController.crop();
-                      //   //   },
-                      //   //   child: Padding(
-                      //   //     padding: const EdgeInsets.symmetric(vertical: 16),
-                      //   //     child: Text('CROP IT!'),
-                      //   //   ),
-                      //   // ),
-                      // ),
-                      const SizedBox(height: 40),
-                    ],
-                  ),
+                        )
+                    ),
+                    //Spacer(),
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 20, left: 20),
+                        height:(MediaQuery.of(context).size.height -
+                            AppBar().preferredSize.height -
+                            MediaQuery.of(context).padding.top) * 0.13,
+                        child:IconButton(
+                          onPressed: () => print('제출하기'),
+                          tooltip: 'Submit',
+                          icon: SvgPicture.asset(
+                            'imgs/redo.svg',
+                            alignment: Alignment.centerRight,
+                            placeholderBuilder: (BuildContext context) => Container(
+                                child: const CircularProgressIndicator()
+                            ),
+                          ),
+                        ),
+                      )
+                    ),
+                  ],
                 ),
-              const SizedBox(height: 16),
-              Text(_statusText),
-              const SizedBox(height: 16),
+                const SizedBox(height: 16),
+                //Text(_statusText),
+                // const SizedBox(height: 16),
             ],
           ),
           replacement: const CircularProgressIndicator(),

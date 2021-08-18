@@ -37,6 +37,7 @@ dependencies:
   image_picker:
   accordion:
   crop_your_image:
+  sizer:
 
 dev_dependencies:
   flutter_test:
