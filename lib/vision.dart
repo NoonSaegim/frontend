@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 
 Future<Album> fetchAlbum() async {
 
-  ByteData bytes = await rootBundle.load('images/kitty.jpg');
+  ByteData bytes = await rootBundle.load('images/horse.jpg');
   var buffer = bytes.buffer;
   var m = base64.encode(Uint8List.view(buffer));
 

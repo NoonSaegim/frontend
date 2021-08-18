@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:noonsaegim_front/vo/wordData.dart';
 import '../common/noon_appbar.dart';
 import '../common/drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';

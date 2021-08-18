@@ -3,6 +3,8 @@ import 'page5/image_picker.dart';
 import 'page8/word_list.dart';
 import 'settings.dart';
 import 'page7/multi_images_process.dart';
+import 'cropper.dart';
+import 'mynote.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -17,15 +19,15 @@ class FirstRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/main',
+      initialRoute: '/mynote',
       routes: {
         '/main': (context) => DemoPage(),
         '/pick': (context) => Gallery(),
         '/settings': (context) => Settings(),
         '/multi' : (context) => MultiImagesProcess(),
+        '/cropper': (context) => MyCropper(),
+        '/mynote' : (context) => MyApp()
       },
     );
   }
 }
-
-
