@@ -4,7 +4,6 @@ import '../common/drawer.dart';
 import '../common/noon_appbar.dart';
 
 
-
 Widget textSection = Container(
   height: 50,
   width: double.maxFinite,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bootstrap/flutter_bootstrap.dart';
 import '../common/drawer.dart';
 import '../common/noon_appbar.dart';
-import '../vo/wordData.dart';
 
 class DemoPage extends StatefulWidget {
   @override

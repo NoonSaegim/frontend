@@ -1,32 +1,17 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:io';
-
+import '../common/drawer.dart';
+import '../common/noon_appbar.dart';
+import '../page5/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
-//void main() => runApp(new MyApp());
 
-class MyCropper extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'ImageCropper',
-      theme: ThemeData.light().copyWith(primaryColor: Colors.deepOrange),
-      home: MyHomePage(
-        title: 'ImageCropper',
-      ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final String title;
-
-  MyHomePage({required this.title});
+class Cropper extends StatefulWidget {
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _CropperState createState() => _CropperState();
 }
 
 enum AppState {
@@ -35,7 +20,7 @@ enum AppState {
   cropped,
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _CropperState extends State<Cropper> {
   late AppState state;
   File? imageFile;
 
@@ -48,16 +33,25 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: imageFile != null ? Image.file(imageFile!) : Container(),
-      ),
+      drawer: new SideBar(),
+      body: Stack(children: <Widget>[
+        Container(
+          color: Colors.black12,
+
+          // height: (MediaQuery.of(context).size.height -
+          //     AppBar().preferredSize.height -
+          //     MediaQuery.of(context).padding.top),// Your screen background color
+          // margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top),
+        ),
+        Center(
+          child: imageFile != null ? Image.file(imageFile!) : Container(),
+        ),
+        TransparentAppBar(),
+      ]),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Colors.white,
         onPressed: () {
-          if (state == AppState.free)
+          if(state == AppState.free)
             _pickImage();
           else if (state == AppState.picked)
             _cropImage();
@@ -70,11 +64,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildButtonIcon() {
     if (state == AppState.free)
-      return Icon(Icons.add);
+      return Icon(Icons.add, color: Colors.lightBlue,);
     else if (state == AppState.picked)
-      return Icon(Icons.crop);
+      return Icon(Icons.crop, color: Colors.lightBlue,);
     else if (state == AppState.cropped)
-      return Icon(Icons.clear);
+      return Icon(Icons.clear, color: Colors.lightBlue,);
     else
       return Container();
   }

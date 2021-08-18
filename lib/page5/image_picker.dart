@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
+import '../common/drawer.dart';
+import '../common/noon_appbar.dart';
 
 
 class Gallery extends StatelessWidget {
@@ -193,11 +195,17 @@ class _ImagePickState extends State<ImagePick> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: new SideBar(),
       body: Stack(children: <Widget>[
         Container(
-        color: Colors.white,// Your screen background color
-      )
-      ,Center(
+          color: Colors.white,
+          // color: Colors.black12,
+          // height: (MediaQuery.of(context).size.height -
+          //     AppBar().preferredSize.height -
+          //     MediaQuery.of(context).padding.top),// Your screen background color
+          // margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top),
+        ),
+        Center(
         child: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
         ? FutureBuilder<void>(
             builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -225,20 +233,7 @@ class _ImagePickState extends State<ImagePick> {
               }
             },
         ) : _handlePreview(),
-      ),
-      new Positioned(
-          top: 0.0,
-          left: 0.0,
-          right: 0.0,
-          child: AppBar(
-            leading: new IconButton(
-              icon: new Icon(Icons.arrow_back_ios, color: Colors.grey),
-              onPressed: () => Navigator.pushNamed(context, '/main'),
-            ),
-            backgroundColor: Colors.blue.withOpacity(0.3), //You can make this transparent
-            elevation: 0.0,//No shadow
-          )
-      )
+      ), TransparentAppBar()
       ]),
     );
   }

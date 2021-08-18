@@ -5,7 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'cropper.dart';
+import 'page3/cropper.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
