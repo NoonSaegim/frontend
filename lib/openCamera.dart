@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'cropper.dart';
+import '../common/noon_appbar.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -73,7 +74,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('사진촬영')),
+      appBar: AppBar(
+        title: Container(
+          height: AppBar().preferredSize.height * 0.95,
+        ),
+        elevation: 0.0,
+        leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                color: Colors.lightBlue,
+                tooltip: 'Menu',
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              );
+            }
+        ),
+      ),
       // 카메라 프리뷰를 보여주기 전에 컨트롤러 초기화를 기다려야 합니다. 컨트롤러 초기화가
       // 완료될 때까지 FutureBuilder를 사용하여 로딩 스피너를 보여주세요.
       body: FutureBuilder<void>(
@@ -129,7 +145,7 @@ class DisplayPictureScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(title: const Text('미리보기')),
+      appBar: new AppBar2(),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
        body: Image.file(File(imagePath)),
