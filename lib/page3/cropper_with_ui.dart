@@ -25,7 +25,7 @@ class _SingleCropperState extends State<SingleCropper> {
             color: Colors.black12,
             height: (MediaQuery.of(context).size.height -
                 AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.top) * 0.8,// Your screen background color
+                MediaQuery.of(context).padding.top) * 0.75,// Your screen background color
             margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top),
           ),
           Center(
@@ -46,7 +46,7 @@ class Cropper extends StatefulWidget {
 class _CropperState extends State<Cropper> {
   static const _images = const [
     'imgs/apple-logo.png',
-    'imgs/main.JPG',
+    'imgs/main.jpg',
   ];
 
   final _cropController = CropController();
@@ -114,7 +114,11 @@ class _CropperState extends State<Cropper> {
                     ],
                   ),
                 ),
-              Expanded(
+              //Expanded(
+              Container(
+                height: (MediaQuery.of(context).size.height -
+                    AppBar().preferredSize.height -
+                    MediaQuery.of(context).padding.top) * 0.75,
                 child: Visibility(
                   visible: _croppedData == null,
                   child: Stack(
@@ -166,6 +170,7 @@ class _CropperState extends State<Cropper> {
                   ),
                 ),
               ),
+
               if (_croppedData == null)
                 Padding(
                   padding: const EdgeInsets.all(16),
@@ -215,42 +220,49 @@ class _CropperState extends State<Cropper> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Expanded(
-                        child: Container(
-                          padding: EdgeInsets.only(right: 20, left: 20),
-                          height:(MediaQuery.of(context).size.height -
-                              AppBar().preferredSize.height -
-                              MediaQuery.of(context).padding.top) * 0.13,
-                          child: IconButton(
-                              onPressed: () => print('다시 찍기 to camera'),
-                              tooltip: 'retake',
-                              icon: Transform(
-                                alignment: Alignment.center,
-                                transform: Matrix4.rotationY(math.pi),
-                                child: SvgPicture.asset(
-                                  'imgs/redo.svg',
-                                  alignment: Alignment.centerRight,
-                                  placeholderBuilder: (BuildContext context) => Container(
-                                      child: const CircularProgressIndicator()
-                                  ),
-                                ),
-                              )
-                          ),
-                        )
-                    ),
-                    //Spacer(),
-                    Expanded(
+              const SizedBox(height: 10,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
                       child: Container(
                         padding: EdgeInsets.only(right: 20, left: 20),
                         height:(MediaQuery.of(context).size.height -
                             AppBar().preferredSize.height -
-                            MediaQuery.of(context).padding.top) * 0.13,
+                            MediaQuery.of(context).padding.top) * 0.15,
+                        child: IconButton(
+                            onPressed: () => print('다시 찍기 to camera'),
+                            tooltip: 'retake',
+                            icon: Transform(
+                              alignment: Alignment.center,
+                              transform: Matrix4.rotationY(math.pi),
+                              child: SvgPicture.asset(
+                                'imgs/redo.svg',
+                                alignment: Alignment.centerRight,
+                                placeholderBuilder: (BuildContext context) => Container(
+                                    child: const CircularProgressIndicator()
+                                ),
+                              ),
+                            )
+                        ),
+                      )
+                  ),
+                  //Spacer(),
+                  Expanded(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 20, left: 20),
+                        height:(MediaQuery.of(context).size.height -
+                            AppBar().preferredSize.height -
+                            MediaQuery.of(context).padding.top) * 0.15,
                         child:IconButton(
-                          onPressed: () => print('제출하기'),
+                          onPressed: (){
+                            setState(() {
+                            _isCropping = true;
+                            });
+                            _isCircleUi
+                            ? _cropController.cropCircle()
+                                : _cropController.crop();
+                          },
                           tooltip: 'Submit',
                           icon: SvgPicture.asset(
                             'imgs/redo.svg',
@@ -261,17 +273,53 @@ class _CropperState extends State<Cropper> {
                           ),
                         ),
                       )
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(left: 30),
+                      child: Text(
+                          '다시 찍기',
+                          style: TextStyle(
+                            //color: Colors.white,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 1
+                              ..color = Colors.lightBlueAccent,
+                          ),
+                      ),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                //Text(_statusText),
-                // const SizedBox(height: 16),
+                  ),
+                  Spacer(),
+                  Spacer(),
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(right: 30),
+                      child: Text(
+                          '제출 하기',
+                          style: TextStyle(
+                          //color: Colors.white,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..strokeWidth = 1
+                              ..color = Colors.lightBlueAccent,
+                         ),
+                      ),
+                    ),
+                  ),
+                ],
+              )
             ],
           ),
           replacement: const CircularProgressIndicator(),
         ),
       ),
+
+
     );
   }
 
