@@ -37,16 +37,16 @@ class Home extends StatelessWidget {
               margin: EdgeInsets.only(
                 top:(MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top) * 0.05,),
+                      MediaQuery.of(context).padding.top) * 0.04,),
               alignment: Alignment.center,
               child: GestureDetector(
                 behavior:HitTestBehavior.translucent,
                 onTap: () => _pickImage(),
                 child: Container(
-                  width: MediaQuery.of(context).size.width * 0.32,
+                  width: MediaQuery.of(context).size.width * 0.34,
                   height: (MediaQuery.of(context).size.height -
                       AppBar().preferredSize.height -
-                      MediaQuery.of(context).padding.top) * 0.12,
+                      MediaQuery.of(context).padding.top) * 0.14,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
@@ -70,7 +70,7 @@ class Home extends StatelessWidget {
                       '사진 가져오기',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 12.5,
+                        fontSize: 14,
                         fontWeight: FontWeight.w200,
                       ),
                     ),
@@ -83,7 +83,7 @@ class Home extends StatelessWidget {
               margin: EdgeInsets.only(
                 top:(MediaQuery.of(context).size.height -
                     AppBar().preferredSize.height -
-                    MediaQuery.of(context).padding.top) * 0.04,),
+                    MediaQuery.of(context).padding.top) * 0.035,),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -91,10 +91,10 @@ class Home extends StatelessWidget {
                     behavior:HitTestBehavior.translucent,
                     onTap: () => Navigator.pushNamed(context, '/recently'),
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.32,
+                      width: MediaQuery.of(context).size.width * 0.34,
                       height: (MediaQuery.of(context).size.height -
                           AppBar().preferredSize.height -
-                          MediaQuery.of(context).padding.top) * 0.12,
+                          MediaQuery.of(context).padding.top) * 0.14,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -118,7 +118,7 @@ class Home extends StatelessWidget {
                           '최근 조회한 단어',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12.5,
+                            fontSize: 14,
                             fontWeight: FontWeight.w200,
                           ),
                         ),
@@ -129,10 +129,10 @@ class Home extends StatelessWidget {
                     behavior:HitTestBehavior.translucent,
                     onTap: () => Navigator.pushNamed(context, '/mynote'),
                     child: Container(
-                      width: MediaQuery.of(context).size.width * 0.32,
+                      width: MediaQuery.of(context).size.width * 0.34,
                       height: (MediaQuery.of(context).size.height -
                           AppBar().preferredSize.height -
-                          MediaQuery.of(context).padding.top) * 0.12,
+                          MediaQuery.of(context).padding.top) * 0.14,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
@@ -156,7 +156,7 @@ class Home extends StatelessWidget {
                           '나의 단어장',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 12.5,
+                            fontSize: 14,
                             fontWeight: FontWeight.w200,
                           ),
                         ),
@@ -167,30 +167,29 @@ class Home extends StatelessWidget {
               ),
             ),
             Expanded(
+              child: Align(
+                alignment: FractionalOffset.bottomCenter,
                 child: Container(
-                  // margin: EdgeInsets.only(
-                  //   top:(MediaQuery.of(context).size.height -
-                  //       AppBar().preferredSize.height -
-                  //       MediaQuery.of(context).padding.top) * 0.02),
-
-                  alignment: Alignment.center,
+                  height: (MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top) * 0.16,
+                  width: MediaQuery.of(context).size.width,
+                  //padding: EdgeInsets.only(bottom: ),
                   child: IconButton(
-                      onPressed: () => {print('open camera')},
-                      tooltip: 'camera',
-                      icon: SvgPicture.asset(
-                        'imgs/diaphragm.svg',
+                    onPressed: () => {print('open camera')},
+                    tooltip: 'camera',
+                    icon: SvgPicture.asset(
+                      'imgs/diaphragm.svg',
                       placeholderBuilder: (BuildContext context) => Container(
                           child: const CircularProgressIndicator()
                       ),
-                      height: (MediaQuery.of(context).size.height -
-                          AppBar().preferredSize.height -
-                          MediaQuery.of(context).padding.top) * 0.12,
-                        fit: BoxFit.fitHeight,
+                      fit: BoxFit.fitHeight,
+                    ),
                   ),
-                )
-            )
-          ),
-        ],
+                ),
+              ),
+            ),
+          ],
       ),
     );
   }
