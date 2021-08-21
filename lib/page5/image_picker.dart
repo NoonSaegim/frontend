@@ -7,6 +7,14 @@ import 'package:flutter/rendering.dart';
 import 'package:frontend/common/drawer.dart';
 import 'package:frontend/common/noon_appbar.dart';
 import 'package:image_picker/image_picker.dart';
+import '../common/drawer.dart';
+import '../common/noon_appbar.dart';
+
+class Arguments {
+  final File image;
+
+  Arguments(this.image);
+}
 
 
 class Gallery extends StatelessWidget {
@@ -14,13 +22,14 @@ class Gallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(body: ImagePick(title: 'Gallery'));
+    final args = ModalRoute.of(context)!.settings.arguments as Arguments;
+    return new Scaffold(body: ImagePick(image: args.image));
   }
 }
 
 class ImagePick extends StatefulWidget {
-  const ImagePick({Key? key, required this.title}) : super(key: key);
-  final String? title;
+  const ImagePick({Key? key, required this.image}) : super(key: key);
+  final File image;
   @override
   _ImagePickState createState() => _ImagePickState();
 }
@@ -127,9 +136,14 @@ class _ImagePickState extends State<ImagePick> {
       drawer: SideBar(),
       body: Stack(children: <Widget>[
         Container(
-        color: Colors.white,// Your screen background color
-      )
-      ,Center(
+          color: Colors.white,
+          // color: Colors.black12,
+          // height: (MediaQuery.of(context).size.height -
+          //     AppBar().preferredSize.height -
+          //     MediaQuery.of(context).padding.top),// Your screen background color
+          // margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top),
+        ),
+        Center(
         child: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
         ? FutureBuilder<void>(
             builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -158,7 +172,7 @@ class _ImagePickState extends State<ImagePick> {
             },
         ) : _handlePreview(),
       ),
-      TransparentAppBar()
+      TransparentAppBar(),
       ]),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -196,6 +210,7 @@ class _ImagePickState extends State<ImagePick> {
     );
   }
 }
+
 
 typedef void OnPickImageCallback(
     double? maxWidth, double? maxHeight, int? quality);
