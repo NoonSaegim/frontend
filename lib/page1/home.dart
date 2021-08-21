@@ -3,12 +3,18 @@ import 'package:flutter_svg/svg.dart';
 import '../common/noon_appbar.dart';
 import '../common/drawer.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
+    Future<Null> _pickImage() async {
+      final pickedImage = await ImagePicker().getImage(source: ImageSource.gallery);
+      Navigator.pushNamed(context, '/pick', arguments: pickedImage);
+    }
+    
     return Scaffold(
       backgroundColor: Colors.white,
       drawer: new SideBar(),
@@ -35,7 +41,7 @@ class Home extends StatelessWidget {
               alignment: Alignment.center,
               child: GestureDetector(
                 behavior:HitTestBehavior.translucent,
-                onTap: () => Navigator.pushNamed(context, '/pick'),
+                onTap: () => _pickImage(),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.32,
                   height: (MediaQuery.of(context).size.height -

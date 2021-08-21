@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'page1/home.dart';
 import 'page5/image_picker.dart';
 import 'page8/word_list.dart';
 import 'settings.dart';
 import 'page7/multi_images_process.dart';
+
 import 'cropper.dart';
 import 'mynote.dart';
 
@@ -19,9 +21,10 @@ class FirstRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/mynote',
+      initialRoute: '/main',
       routes: {
-        '/main': (context) => DemoPage(),
+        '/main' : (context) => Home(),
+        '/recently': (context) => DemoPage(),
         '/pick': (context) => Gallery(),
         '/settings': (context) => Settings(),
         '/multi' : (context) => MultiImagesProcess(),
