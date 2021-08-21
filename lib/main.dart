@@ -19,7 +19,7 @@ class FirstRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/mynote',
+      initialRoute: '/pick',
       routes: {
         '/main': (context) => DemoPage(),
         '/pick': (context) => Gallery(),

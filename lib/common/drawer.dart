@@ -38,15 +38,6 @@ class SideBar extends StatelessWidget {
           ),
           ListTile(
               leading: IconButton(
-                icon: Icon(Icons.camera),
-                color: Colors.lightBlue,
-                tooltip: 'Gallery',
-                onPressed: () => Navigator.pushNamed(context, '/pick'),
-              ),
-              title: Text('Gallery', style: TextStyle(color: Colors.lightBlue),)
-          ),
-          ListTile(
-              leading: IconButton(
                 icon: Icon(Icons.power_settings_new_outlined),
                 color: Colors.lightBlue,
                 tooltip: 'Exit',

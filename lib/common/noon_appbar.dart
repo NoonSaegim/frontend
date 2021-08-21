@@ -136,3 +136,34 @@ class Search extends SearchDelegate {
   }
 
 }
+
+class TransparentAppBar extends StatelessWidget with PreferredSizeWidget{
+  const TransparentAppBar({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Positioned(
+        top: 0.0,
+        left: 0.0,
+        right: 0.0,
+
+        child: AppBar(
+          leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: Icon(Icons.menu),
+                  color: Colors.lightBlueAccent,
+                  tooltip: 'Menu',
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                );
+              }
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0.0,
+        )
+    );
+  }
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+}
