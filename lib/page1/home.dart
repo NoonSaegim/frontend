@@ -29,7 +29,9 @@ class Home extends StatelessWidget {
                 //color: Colors.black12,
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(top: 10),
-                width: MediaQuery.of(context).size.width,
+                height: (MediaQuery.of(context).size.height -
+                      AppBar().preferredSize.height -
+                      MediaQuery.of(context).padding.top) * 0.45,
                 child: Image.asset('imgs/main.jpg'),
               ),
             ),
