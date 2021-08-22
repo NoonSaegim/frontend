@@ -1,44 +1,53 @@
 import 'package:flutter/material.dart';
 import '../common/drawer.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../common/noon_appbar.dart';
 import './accordion.dart';
-import "dart:math" show pi;
 
-void main() {
-  runApp(MyApp());
+class MyNote extends StatefulWidget {
+  const MyNote({Key? key}) : super(key: key);
+
+  @override
+  _MyNoteState createState() => _MyNoteState();
 }
 
-class MyApp extends StatelessWidget {
+class _MyNoteState extends State<MyNote> {
+  int _listSize = 15;
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // Hide the debug banner
-      debugShowCheckedModeBanner: false,
-      title: 'Kindacode.com',
-      home: HomePage(),
-    );
+    return Scaffold(
+        backgroundColor: Colors.white,
+        drawer: SideBar(),
+        appBar: AppBar2(),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child : Column(
+                    children:
+                      <Widget>[
+                        Container(
+                          padding: EdgeInsets.only(
+                              top: (MediaQuery.of(context).size.height -
+                                  AppBar().preferredSize.height -
+                                  MediaQuery.of(context).padding.top) * 0.03,
+                          ),
+                          height: (MediaQuery.of(context).size.height -
+                              AppBar().preferredSize.height -
+                              MediaQuery.of(context).padding.top) * 0.9,
+                          width: MediaQuery.of(context).size.width,
+                          child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: _listSize,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Accordion('단어장 #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum ornare vulputate. Curabitur faucibus condimentum purus quis tristique.');
+                              }
+                          ),
+                        )
+                      ],
+                  ),
+            ),
+        );
+
   }
 }
 
-class HomePage extends StatelessWidget {
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar:new AppBar2(),
-      body:
-      SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child :
-          Column(children: [
-            Accordion('단어장 #1',
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam bibendum ornare vulputate. Curabitur faucibus condimentum purus quis tristique.'),
-            Accordion('단어장 #2',
-                'Fusce ex mi, commodo ut bibendum sit amet, faucibus ac felis. Nullam vel accumsan turpis, quis pretium ipsum. Pellentesque tristique, diam at congue viverra, neque dolor suscipit justo, vitae elementum leo sem vel ipsum'),
-            Accordion('단어장 #3',
-                'Nulla facilisi. Donec a bibendum metus. Fusce tristique ex lacus, ac finibus quam semper eu. Ut maximus, enim eu ornare fringilla, metus neque luctus est, rutrum accumsan nibh ipsum in erat. Morbi tristique accumsan odio quis luctus.'),
-          ]
-          )
-      ),
-    );
-  }
-}
