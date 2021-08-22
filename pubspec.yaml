@@ -36,6 +36,9 @@ dependencies:
   image_cropper:
   image_picker:
   accordion:
+  flutter_switch:
+  rflutter_alert:
+  flutter_typeahead:
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'page5/image_picker.dart';
 import 'page8/word_list.dart';
-import 'settings.dart';
+import 'page10/settings.dart';
 import 'page7/multi_images_process.dart';
 
 void main() {
@@ -17,7 +17,7 @@ class FirstRoute extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/pick',
+      initialRoute: '/settings',
       routes: {
         '/main': (context) => DemoPage(),
         '/pick': (context) => Gallery(),

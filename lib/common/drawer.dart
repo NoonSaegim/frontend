@@ -25,7 +25,10 @@ class SideBar extends StatelessWidget {
                 tooltip: 'Home',
                 onPressed: () => Navigator.pushNamed(context, '/main'),
               ),
-              title: Text('Home', style: TextStyle(color: Colors.lightBlue),)
+              title: GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/main'),
+                child: Text('Home', style: TextStyle(color: Colors.lightBlue),)
+              )
           ),
           ListTile(
               leading: IconButton(
@@ -34,7 +37,10 @@ class SideBar extends StatelessWidget {
                 tooltip: 'Settings',
                 onPressed: () => Navigator.pushNamed(context, '/settings'),
               ),
-              title: Text('Settings', style: TextStyle(color: Colors.lightBlue),)
+              title: GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/settings'),
+                child: Text('Settings', style: TextStyle(color: Colors.lightBlue),)
+              )
           ),
           ListTile(
               leading: IconButton(
@@ -43,7 +49,10 @@ class SideBar extends StatelessWidget {
                 tooltip: 'Exit',
                 onPressed: () => print('Exit'),
               ),
-              title: Text('Exit', style: TextStyle(color: Colors.lightBlue),)
+              title: GestureDetector(
+                onTap: () => print('Exit'),
+                child: Text('Exit', style: TextStyle(color: Colors.lightBlue),)
+              )
           ),
         ],
       ),

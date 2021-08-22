@@ -57,6 +57,7 @@ class _MultiImagesProcessState extends State<MultiImagesProcess> {
       drawer: new SideBar(),
       appBar: new AppBar1(),
       body: Column(
+
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
