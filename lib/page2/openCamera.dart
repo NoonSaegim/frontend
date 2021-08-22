@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'cropper.dart';
+import '../common/noon_appbar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../common/drawer.dart';
+import '../cropper.dart';
 
 Future<void> main() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
@@ -73,7 +74,22 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('사진촬영')),
+      appBar: AppBar(
+        title: Container(
+        ),
+        centerTitle: true,
+        elevation: 0.0,
+        leading: Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                color: Colors.lightBlue,
+                tooltip: 'Menu',
+                onPressed: () => Scaffold.of(context).openDrawer(),
+              );
+            }
+        ),
+      ),
       // 카메라 프리뷰를 보여주기 전에 컨트롤러 초기화를 기다려야 합니다. 컨트롤러 초기화가
       // 완료될 때까지 FutureBuilder를 사용하여 로딩 스피너를 보여주세요.
       body: FutureBuilder<void>(
@@ -88,31 +104,42 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        // Provide an onPressed callback.
-        onPressed: () async {
-          //사진찍기
-          try {
-            await initializeControllerFuture;
+      bottomNavigationBar: Container(
+        color:Colors.white,
+        height: 80,
+        child : IconButton(
+          onPressed: () async {
+            //사진찍기
+            try {
+              await initializeControllerFuture;
 
-            // Attempt to take a picture and get the file `image`
-            // where it was saved.
-            final image = await Camcontroller.takePicture();
-            // If the picture was taken, display it on a new screen.
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(
-                  // Pass the automatically generated path to
-                  // the DisplayPictureScreen widget.
-                  imagePath: image.path,
+              // Attempt to take a picture and get the file `image`
+              // where it was saved.
+              final image = await Camcontroller.takePicture();
+              // If the picture was taken, display it on a new screen.
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DisplayPictureScreen(
+                    // Pass the automatically generated path to
+                    // the DisplayPictureScreen widget.
+                    imagePath: image.path,
+                  ),
                 ),
-              ),
-            );
-          } catch (e) {
-            print(e);
-          }
-        },
-        child: const Icon(Icons.camera_alt),
+              );
+            } catch (e) {
+              print(e);
+            }
+          },
+          tooltip: 'Audio',
+          icon: SvgPicture.asset(
+            'imgs/diaphragm.svg',
+            placeholderBuilder: (BuildContext context) => Container(
+                child: const CircularProgressIndicator()
+            ),
+          ),
+        ),
+        // Provide an onPressed callback.
+        //    child: const Icon(Icons.camera_alt),
       ),
     );
   }
@@ -127,13 +154,13 @@ class DisplayPictureScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: const Text('미리보기')),
+      appBar: new AppBar2(),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-       body: Image.file(File(imagePath)),
-
+       body: Container(
+           child : Image.file(File(imagePath))
+       ),
     );
 
   }
