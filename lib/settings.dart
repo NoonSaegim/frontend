@@ -14,6 +14,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       drawer: new SideBar(),
       appBar: new AppBar1(),
       body: SingleChildScrollView(
