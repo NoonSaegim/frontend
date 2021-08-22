@@ -10,10 +10,6 @@ class Home extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    Future<Null> _pickImage() async {
-      final pickedImage = await ImagePicker().getImage(source: ImageSource.gallery);
-      Navigator.pushNamed(context, '/pick', arguments: pickedImage);
-    }
     
     return Scaffold(
       backgroundColor: Colors.white,
@@ -43,7 +39,7 @@ class Home extends StatelessWidget {
               alignment: Alignment.center,
               child: GestureDetector(
                 behavior:HitTestBehavior.translucent,
-                onTap: () => _pickImage(),
+                onTap: () => Navigator.pushNamed(context, '/pick'),
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.34,
                   height: (MediaQuery.of(context).size.height -

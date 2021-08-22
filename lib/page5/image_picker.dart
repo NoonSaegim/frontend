@@ -4,15 +4,9 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:frontend/common/drawer.dart';
+import 'package:frontend/common/noon_appbar.dart';
 import 'package:image_picker/image_picker.dart';
-import '../common/drawer.dart';
-import '../common/noon_appbar.dart';
-
-class Arguments {
-  final File image;
-
-  Arguments(this.image);
-}
 
 
 class Gallery extends StatelessWidget {
@@ -20,14 +14,13 @@ class Gallery extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Arguments;
-    return new Scaffold(body: ImagePick(image: args.image));
+    return new Scaffold(body: ImagePick(title: 'Gallery'));
   }
 }
 
 class ImagePick extends StatefulWidget {
-  const ImagePick({Key? key, required this.image}) : super(key: key);
-  final File image;
+  const ImagePick({Key? key, required this.title}) : super(key: key);
+  final String? title;
   @override
   _ImagePickState createState() => _ImagePickState();
 }
@@ -48,42 +41,27 @@ class _ImagePickState extends State<ImagePick> {
   void _onImageButtonPressed(ImageSource source,
       {BuildContext? context, bool isMultiImage = false}) async {
     if(isMultiImage) {
-      await _displayPickImageDialog(context!,
-              (double? maxWidth, double? maxHeight, int? quality) async {
-            try {
-              final pickedFileList = await _picker.pickMultiImage(
-                maxWidth: maxWidth,
-                maxHeight: maxHeight,
-                imageQuality: quality,
-              );
-              setState(() {
-                _imageFileList = pickedFileList;
-              });
-            } catch (e) {
-              setState(() {
-                _pickImageError = e;
-              });
-            }
+        try {
+          final pickedFileList = await _picker.pickMultiImage();
+          setState(() {
+            _imageFileList = pickedFileList;
           });
+        } catch (e) {
+          setState(() {
+            _pickImageError = e;
+          });
+        }
     } else {
-      await _displayPickImageDialog(context!,
-              (double? maxWidth, double? maxHeight, int? quality) async {
-            try {
-              final pickedFile = await _picker.pickImage(
-                source: source,
-                maxWidth: maxWidth,
-                maxHeight: maxHeight,
-                imageQuality: quality,
-              );
-              setState(() {
-                _imageFile = pickedFile;
-              });
-            } catch (e) {
-              setState(() {
-                _pickImageError = e;
-              });
-            }
+        try {
+            final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+          setState(() {
+            _imageFile = pickedFile;
           });
+        } catch (e) {
+          setState(() {
+            _pickImageError = e;
+          });
+        }
     }
   }
 
@@ -139,62 +117,6 @@ class _ImagePickState extends State<ImagePick> {
     return null;
   }
 
-
-  Future<void> _displayPickImageDialog(
-      BuildContext context, OnPickImageCallback onPick) async {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text('Add optional parameters'),
-            content: Column(
-              children: <Widget>[
-                TextField(
-                  controller: maxWidthController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration:
-                  InputDecoration(hintText: "Enter maxWidth if desired"),
-                ),
-                TextField(
-                  controller: maxHeightController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration:
-                  InputDecoration(hintText: "Enter maxHeight if desired"),
-                ),
-                TextField(
-                  controller: qualityController,
-                  keyboardType: TextInputType.number,
-                  decoration:
-                  InputDecoration(hintText: "Enter quality if desired"),
-                ),
-              ],
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('CANCEL'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              TextButton(
-                  child: const Text('PICK'),
-                  onPressed: () {
-                    double? width = maxWidthController.text.isNotEmpty
-                        ? double.parse(maxWidthController.text)
-                        : null;
-                    double? height = maxHeightController.text.isNotEmpty
-                        ? double.parse(maxHeightController.text)
-                        : null;
-                    int? quality = qualityController.text.isNotEmpty
-                        ? int.parse(qualityController.text)
-                        : null;
-                    onPick(width, height, quality);
-                    Navigator.of(context).pop();
-                  }),
-            ],
-          );
-        });
-  }
   Widget _handlePreview() {
       return _previewImages();
   }
@@ -202,17 +124,12 @@ class _ImagePickState extends State<ImagePick> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: new SideBar(),
+      drawer: SideBar(),
       body: Stack(children: <Widget>[
         Container(
-          color: Colors.white,
-          // color: Colors.black12,
-          // height: (MediaQuery.of(context).size.height -
-          //     AppBar().preferredSize.height -
-          //     MediaQuery.of(context).padding.top),// Your screen background color
-          // margin: EdgeInsets.only(top:AppBar().preferredSize.height +  MediaQuery.of(context).padding.top),
-        ),
-        Center(
+        color: Colors.white,// Your screen background color
+      )
+      ,Center(
         child: !kIsWeb && defaultTargetPlatform == TargetPlatform.android
         ? FutureBuilder<void>(
             builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
@@ -240,12 +157,45 @@ class _ImagePickState extends State<ImagePick> {
               }
             },
         ) : _handlePreview(),
-      ), TransparentAppBar()
+      ),
+      TransparentAppBar()
       ]),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Semantics(
+            label: 'image picker from_gallery',
+            child: FloatingActionButton(
+              onPressed: () {
+                _onImageButtonPressed(ImageSource.gallery, context: context);
+              },
+              //heroTag: 'image0',
+              tooltip: 'Pick a Image from gallery',
+              child: const Icon(Icons.photo,),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                _onImageButtonPressed(
+                  ImageSource.gallery,
+                  context: context,
+                  isMultiImage: true,
+                );
+              },
+              //heroTag: 'image1',
+              tooltip: 'Pick Multiple Image from gallery',
+              child: const Icon(Icons.photo_library),
+              backgroundColor: Colors.lightBlue,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
-
 
 typedef void OnPickImageCallback(
     double? maxWidth, double? maxHeight, int? quality);
