@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import '../common/noon_appbar.dart';
 import '../common/drawer.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart' show rootBundle;
+import '../page2/openCamera.dart';
+import 'package:camera/camera.dart';
 
 class SingleCropper extends StatefulWidget {
   const SingleCropper({Key? key}) : super(key: key);
@@ -230,7 +233,7 @@ class _CropperState extends State<Cropper> {
                             AppBar().preferredSize.height -
                             MediaQuery.of(context).padding.top) * 0.15,
                         child: IconButton(
-                            onPressed: () => print('다시 찍기 to camera'),
+                            onPressed: () => camera(),
                             tooltip: 'retake',
                             icon: Transform(
                               alignment: Alignment.center,

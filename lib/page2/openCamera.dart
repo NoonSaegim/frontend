@@ -5,13 +5,12 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'page3/cropper.dart';
+import '../page3/cropper.dart';
 
-Future<void> main() async {
+Future<void> camera() async {
   // Ensure that plugin services are initialized so that `availableCameras()`
   // can be called before `runApp()`
   WidgetsFlutterBinding.ensureInitialized();
-
   // 디바이스에서 이용가능한 카메라 목록을 받아옵니다.
   final cameras = await availableCameras();
 
