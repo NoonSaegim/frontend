@@ -39,6 +39,11 @@ dependencies:
   flutter_switch:
   rflutter_alert:
   flutter_typeahead:
+  searchfield:
+  flutter_provider:
+  provider:
+  flutter_picker:
+    git: git://github.com/yangyxd/flutter_picker.git
 
 dev_dependencies:
   flutter_test:
