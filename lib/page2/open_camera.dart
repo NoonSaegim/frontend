@@ -1,33 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
-import 'cropper.dart';
-
-Future<void> main() async {
-  // Ensure that plugin services are initialized so that `availableCameras()`
-  // can be called before `runApp()`
-  WidgetsFlutterBinding.ensureInitialized();
-
-  // 디바이스에서 이용가능한 카메라 목록을 받아옵니다.
-  final cameras = await availableCameras();
-
-  // 이용가능한 카메라 목록에서 특정 카메라를 얻습니다.
-  final firstCamera = cameras.first;
-
-  runApp(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      home: TakePictureScreen(
-        // Pass the appropriate camera to the TakePictureScreen widget.
-        camera: firstCamera,
-      ),
-    ),
-  );
-}
+import '../common/noon_appbar.dart';
+import '../common/drawer.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 // A screen that allows users to take a picture using a given camera.
 class TakePictureScreen extends StatefulWidget {
@@ -70,10 +47,13 @@ class TakePictureScreenState extends State<TakePictureScreen> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('사진촬영')),
+      backgroundColor: Colors.white24,
+      drawer: SideBar(),
+      appBar: TransparentAppBar(),
       // 카메라 프리뷰를 보여주기 전에 컨트롤러 초기화를 기다려야 합니다. 컨트롤러 초기화가
       // 완료될 때까지 FutureBuilder를 사용하여 로딩 스피너를 보여주세요.
       body: FutureBuilder<void>(
@@ -88,31 +68,43 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        // Provide an onPressed callback.
-        onPressed: () async {
-          //사진찍기
-          try {
-            await initializeControllerFuture;
-
-            // Attempt to take a picture and get the file `image`
-            // where it was saved.
-            final image = await Camcontroller.takePicture();
-            // If the picture was taken, display it on a new screen.
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DisplayPictureScreen(
-                  // Pass the automatically generated path to
-                  // the DisplayPictureScreen widget.
-                  imagePath: image.path,
+      bottomNavigationBar: Container(
+        color:Colors.white,
+        height: (MediaQuery.of(context).size.height -
+            AppBar().preferredSize.height -
+            MediaQuery.of(context).padding.top) * 0.16,
+        child : IconButton(
+          onPressed: () async {
+            //사진찍기
+            try {
+              await initializeControllerFuture;
+              // Attempt to take a picture and get the file `image`
+              // where it was saved.
+              final image = await Camcontroller.takePicture();
+              // If the picture was taken, display it on a new screen.
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DisplayPictureScreen(
+                    // Pass the automatically generated path to
+                    // the DisplayPictureScreen widget.
+                    imagePath: image.path,
+                  ),
                 ),
-              ),
-            );
-          } catch (e) {
-            print(e);
-          }
-        },
-        child: const Icon(Icons.camera_alt),
+              );
+            } catch (e) {
+              print(e);
+            }
+          },
+          tooltip: 'Audio',
+          icon: SvgPicture.asset(
+            'imgs/diaphragm.svg',
+            placeholderBuilder: (BuildContext context) => Container(
+                child: const CircularProgressIndicator()
+            ),
+          ),
+        ),
+        // Provide an onPressed callback.
+        //    child: const Icon(Icons.camera_alt),
       ),
     );
   }
@@ -127,13 +119,13 @@ class DisplayPictureScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(title: const Text('미리보기')),
+      appBar: new AppBar2(),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-       body: Image.file(File(imagePath)),
-
+       body: Container(
+           child : Image.file(File(imagePath))
+       ),
     );
 
   }
