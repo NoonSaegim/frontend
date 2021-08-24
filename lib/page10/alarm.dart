@@ -7,18 +7,21 @@ import 'dart:convert';
 import '../common/alert.dart';
 
 class Alarm{
-  final _timeJson = '''[
+  final List<int> hours = List.generate(12, (index) => index + 1);
+  final List<int> minutes = List.generate(60, (index) => index);
+  var _timeJson;
+
+  Alarm() {
+    _timeJson = '''[
       [
-        "AM",
-        "PM"
+        "AM","PM"
       ],
-      [
-        0,1,2,3,4,5,6,7,8,9,10,11
-      ],
-      [
-        0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
-      ]     
+      ${hours.toString()}
+      ,
+      ${minutes.toString()}  
   ]''';
+  }
+
   final _weekJson = '''[
     ["월", "화", "수", "목", "금"],
     ["평일", "주말"]
@@ -52,40 +55,6 @@ class Alarm{
     ).showDialog(context);
   }
 
-  Widget _setUpAlarmSettingContainer(BuildContext context) {
-    return Container(
-      height: (MediaQuery.of(context).size.height -
-          AppBar().preferredSize.height -
-          MediaQuery.of(context).padding.top) * 0.3,
-      width: MediaQuery.of(context).size.width * 0.4,
-      child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: 5,
-          itemBuilder: (BuildContext context, int index) {
-            bool _active = false;
-            setActive(bool value) => _active = value;
-            return Card(
-              // child: InkWell(
-                child: ListTile(
-                  leading: Icon(Icons.alarm, color: _active ? Colors.lightBlueAccent : Colors.grey,),
-                  title: Text('Test Period'),
-                  subtitle: Text('words about fashion'),
-                  trailing: FlutterSwitch(
-                    //showOnOff: true,
-                    activeColor: Colors.lightBlueAccent,
-                    inactiveColor: Colors.grey,
-                    value: _active,
-                    onToggle: (value) => setActive(value),
-                  ),
-                ),
-              //)
-            );
-          }
-      ),
-    );
-  }
-
   manageAlarmSettings(BuildContext context) {
     showDialog(
         context: context,
@@ -93,42 +62,76 @@ class Alarm{
           return AlertDialog(
               scrollable: true,
               title: Text('단어장 알림 설정', textAlign: TextAlign.center,),
-              titlePadding: EdgeInsets.only(top: 25.0),
-              content: Container(
-                width: double.maxFinite,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Expanded(
-                        child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: 5,
-                            itemBuilder: (BuildContext context, int index) {
-                              bool _active = false;
-                              setActive(bool value) => _active = value;
-                              return Card(
-                                // child: InkWell(
-                                child: ListTile(
-                                  leading: Icon(Icons.alarm, color: _active ? Colors.lightBlueAccent : Colors.grey,),
-                                  title: Text('Test Period'),
-                                  subtitle: Text('words about fashion'),
-                                  trailing: FlutterSwitch(
-                                    //showOnOff: true,
-                                    activeColor: Colors.lightBlueAccent,
-                                    inactiveColor: Colors.grey,
-                                    value: _active,
-                                    onToggle: (value) => setActive(value),
-                                  ),
+              titlePadding: EdgeInsets.only(top: 30.0),
+              contentPadding: EdgeInsets.zero,
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.all(10.0),
+                    height: (MediaQuery.of(context).size.height -
+                          AppBar().preferredSize.height -
+                          MediaQuery.of(context).padding.top) * 0.4,
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: ListView.builder(
+                        //scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: 5,
+                        itemBuilder: (BuildContext context, int index) {
+                          bool _active = false;
+                          setActive(bool value) => _active = value;
+                          return Card(
+                            child: ListTile(
+                              leading: Icon(Icons.alarm, color: _active ? Colors.lightBlueAccent : Colors.grey,),
+                              title: Text('Test Period'),
+                              subtitle: Text('words about fashion'),
+                              trailing: Container(
+                                width: MediaQuery.of(context).size.width * 0.15,
+                                child: FlutterSwitch(
+                                  //showOnOff: true,
+                                  activeColor: Colors.lightBlueAccent,
+                                  inactiveColor: Colors.grey,
+                                  value: _active,
+                                  onToggle: (value) => setActive(value),
                                 ),
-                                //)
-                              );
-                            }
-                        ),
+                              ),
+                            ),
+                          );
+                        }
                     )
-                  ],
+                  ),
+                ],
+              ),
+              actions: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Row(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      ButtonTheme(
+                        height: 25.0,
+                        child: DialogButton(
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          color: Colors.lightBlue,
+                          child: Text('SAVE', style: TextStyle(color: Colors.white, fontSize: 16)),
+                          onPressed: () => alert.onSuccess(context, "알림이 저장되었습니다."),
+                        ),
+                      ),
+                      ButtonTheme(
+                          height: 25.0,
+                          child: DialogButton(
+                            width: MediaQuery.of(context).size.width * 0.25,
+                            color: Colors.lightBlue,
+                            child: Text('CLOSE', style: TextStyle(color: Colors.white, fontSize: 16)),
+                            onPressed: () => Navigator.of(context, rootNavigator: true).pop(),
+                          )
+                      )
+                    ],
+                  ),
                 ),
-              )
+                SizedBox(height: 6.0,),
+              ],
           );
         }
     );
